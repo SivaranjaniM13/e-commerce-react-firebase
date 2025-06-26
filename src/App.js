@@ -12,6 +12,7 @@ import CartCheckout from "./pages/CartCheckout";
 import PurchaseHistory from "./pages/PurchaseHistory";
 import ThankYou from "./pages/ThankYou";
 
+
 function App() {
   return (
     <Router>
@@ -27,6 +28,7 @@ function App() {
         <Route path="/cart" element={<CartCheckout />} />
         <Route path="/history" element={<PurchaseHistory />} />
         <Route path="/thankyou" element={<ThankYou />} />
+        
       </Routes>
     </Router>
   );
