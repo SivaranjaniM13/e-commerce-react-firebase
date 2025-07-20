@@ -6,6 +6,8 @@ import {
   addDoc,
   doc,
   getDocs,
+  getDoc,
+  setDoc,
 } from "firebase/firestore";
 
 const AddProduct = () => {
@@ -21,11 +23,12 @@ const AddProduct = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  // Fetch categories on mount
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "categories"));
-        const categoryList = querySnapshot.docs.map((doc) => doc.id);
+        const snapshot = await getDocs(collection(db, "categories"));
+        const categoryList = snapshot.docs.map((doc) => doc.id);
         setCategories(categoryList);
       } catch (err) {
         console.error("Failed to fetch categories:", err);
@@ -35,15 +38,29 @@ const AddProduct = () => {
     fetchCategories();
   }, []);
 
+  // Handle input changes
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.category.trim()) {
+      setMessage("❌ Please select a category.");
+      return;
+    }
 
     try {
       const categoryRef = doc(db, "categories", formData.category);
 
+      // Ensure the category document exists
+      const catSnap = await getDoc(categoryRef);
+      if (!catSnap.exists()) {
+        await setDoc(categoryRef, {}); // create empty document
+      }
+
+      // Add product to category subcollection
       await addDoc(collection(categoryRef, "products"), {
         name: formData.name,
         description: formData.description,
@@ -60,7 +77,7 @@ const AddProduct = () => {
         image: "",
       });
     } catch (err) {
-      console.error("Error adding product:", err);
+      console.error("Error adding product:", err.message);
       setMessage("❌ Failed to add product.");
     }
   };
@@ -75,7 +92,9 @@ const AddProduct = () => {
           ← Back
         </button>
 
-        <h2 className="text-3xl font-extrabold text-indigo-900 mb-4">Add New Product</h2>
+        <h2 className="text-3xl font-extrabold text-indigo-900 mb-4">
+          Add New Product
+        </h2>
 
         {message && (
           <div
@@ -125,8 +144,8 @@ const AddProduct = () => {
 
           <input
             name="price"
-            placeholder="Price"
             type="number"
+            placeholder="Price"
             value={formData.price}
             onChange={handleChange}
             required
