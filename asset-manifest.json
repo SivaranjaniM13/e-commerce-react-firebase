@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/e-commerce-react-firebase/static/css/main.3876d5df.css",
-    "main.js": "/e-commerce-react-firebase/static/js/main.2b6d127c.js",
+    "main.css": "/e-commerce-react-firebase/static/css/main.449128ff.css",
+    "main.js": "/e-commerce-react-firebase/static/js/main.44968287.js",
     "static/js/453.9e3c286b.chunk.js": "/e-commerce-react-firebase/static/js/453.9e3c286b.chunk.js",
     "index.html": "/e-commerce-react-firebase/index.html",
-    "main.3876d5df.css.map": "/e-commerce-react-firebase/static/css/main.3876d5df.css.map",
-    "main.2b6d127c.js.map": "/e-commerce-react-firebase/static/js/main.2b6d127c.js.map",
+    "main.449128ff.css.map": "/e-commerce-react-firebase/static/css/main.449128ff.css.map",
+    "main.44968287.js.map": "/e-commerce-react-firebase/static/js/main.44968287.js.map",
     "453.9e3c286b.chunk.js.map": "/e-commerce-react-firebase/static/js/453.9e3c286b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3876d5df.css",
-    "static/js/main.2b6d127c.js"
+    "static/css/main.449128ff.css",
+    "static/js/main.44968287.js"
   ]
 }
