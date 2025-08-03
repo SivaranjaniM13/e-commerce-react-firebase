@@ -19,16 +19,28 @@ const CartCheckout = () => {
 
   useEffect(() => {
     const fetchCart = async () => {
+      if (!userId) return;
+
       const snap = await getDocs(collection(db, "cart", userId, "items"));
-      const data = snap.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-        quantity: doc.data().quantity || 1,
-      }));
+      const now = Date.now();
+      const fiveMinutes = 5 * 60 * 1000;
+
+      const data = snap.docs.map((doc) => {
+        const item = doc.data();
+        const addedTime = item.timestamp?.toDate?.().getTime?.() || 0;
+
+        return {
+          id: doc.id,
+          ...item,
+          quantity: item.quantity || 1,
+          isNew: now - addedTime <= fiveMinutes,
+        };
+      });
+
       setItems(data);
     };
 
-    if (userId) fetchCart();
+    fetchCart();
   }, [userId]);
 
   useEffect(() => {
@@ -103,7 +115,14 @@ const CartCheckout = () => {
                 className="bg-gray-50 border border-gray-200 p-4 mb-4 rounded-lg flex justify-between items-center shadow-sm"
               >
                 <div>
-                  <h3 className="font-semibold text-lg text-gray-800">{item.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-lg text-gray-800">{item.name}</h3>
+                    {item.isNew && (
+                      <span className="text-xs bg-green-200 text-green-800 px-2 py-0.5 rounded-full">
+                        New
+                      </span>
+                    )}
+                  </div>
                   <p className="text-sm text-gray-600">₹{item.price}</p>
                   <div className="flex items-center mt-2 gap-2">
                     <button
